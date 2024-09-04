@@ -50,7 +50,7 @@ server {
     access_log /var/log/nginx/example_access.log;
     error_log /var/log/nginx/example_error.log;
 }
-
+```apachee
 <VirtualHost *:80>
     ServerAdmin webmaster@example.com
     ServerName example.com
