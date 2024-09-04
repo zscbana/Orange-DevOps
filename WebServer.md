@@ -50,13 +50,13 @@ server {
     access_log /var/log/nginx/example_access.log;
     error_log /var/log/nginx/example_error.log;
 }
-
+```
 
 
 ## Apachee Configuration
 
 **Basic Server Block:**
-
+```
 <VirtualHost *:80>
     ServerAdmin webmaster@example.com
     ServerName example.com
@@ -71,4 +71,4 @@ server {
     ErrorLog ${APACHE_LOG_DIR}/example_error.log
     CustomLog ${APACHE_LOG_DIR}/example_access.log combined
 </VirtualHost>
-
+```
