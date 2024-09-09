@@ -1,7 +1,6 @@
 # Docker and Web Server Labs
 
-## Lab 1: Web Server Report
-- Create a report comparing Nginx and Apache web servers covering performance, configuration, use cases, security, and scalability.
+## Lab 1: Docker file Report
 
 ## Lab 2: Docker Tasks
 
