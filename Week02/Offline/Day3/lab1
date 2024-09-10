@@ -1,6 +1,6 @@
 # LAP 1 
 
-## 1- How many pods exist on the system?
+1- How many pods exist on the system?
 minikube start 
 😄  minikube v1.33.1 on Darwin 14.6.1 (arm64)
 ✨  Using the docker driver based on existing profile
@@ -32,32 +32,32 @@ omarelbanna@Omars-MacBook-Air Day2 % kubectl get pods
 No resources found in default namespace.
 
 
-## 2- How many Nodes exist on the system?
+2- How many Nodes exist on the system?
 
 omarelbanna@Omars-MacBook-Air Orange-DevOps % kubectl get nodes
 
 NAME       STATUS   ROLES           AGE   VERSION
 minikube   Ready    control-plane   18h   v1.30.0
 
-## 3- Create a new pod with the nginx image.
+3- Create a new pod with the nginx image.
     Image name: nginx
 
 omarelbanna@Omars-MacBook-Air Orange-DevOps % kubectl run pod1 --image=nginx
 pod/pod1 created
 
-## 4- Which nodes are these pods placed on?
+4- Which nodes are these pods placed on?
 
 kubectl get pods -o wide
 
 NAME   READY   STATUS    RESTARTS   AGE   IP           NODE       NOMINATED NODE   READINESS GATES
 pod1   1/1     Running   0          43s   10.244.0.5   minikube   <none>           <none>
 
-## 5- Create pod from the below yaml using kubectl apply command
+5- Create pod from the below yaml using kubectl apply command
 
 omarelbanna@Omars-MacBook-Air Day3 % kubectl apply -f 5.yaml
 pod/webapp created
 
-## 6- How many containers are part of the pod webapp
+6- How many containers are part of the pod webapp
 
 2
 
@@ -65,7 +65,7 @@ kubectl get pod webapp
 NAME     READY   STATUS             RESTARTS   AGE
 webapp   1/2     ImagePullBackOff   0          2m11s
 
-## 7- What images are used in the new webapp pod?
+7- What images are used in the new webapp pod?
 
 Only nginx 
 The aginx node is waitng 
@@ -111,7 +111,7 @@ Containers:
     Mounts:
       /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-688fp (ro)
 
-## 8- What is the state of the container agentx in the pod webapp
+8- What is the state of the container agentx in the pod webapp
 
 Waiting 
 
@@ -128,7 +128,7 @@ agentx:
     Environment:    <none>
     Mounts:
 
-## 9- Why do you think the container agentx in pod webapp is in error?
+9- Why do you think the container agentx in pod webapp is in error?
 
 Wrong image name 
 
@@ -136,31 +136,31 @@ Pulling image "agentx"
   Warning  Failed     17s (x2 over 33s)  kubelet            Failed to pull image "agentx": Error response from daemon: pull access denied for agentx, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
   Warning  Failed     17s (x2 over 33s)  kubelet            Error: ErrImagePull
 
-## 10- Delete the webapp Pod.
+10- Delete the webapp Pod.
 
  kubectl delete pod webapp
 
 pod "webapp" deleted
 
-## 11- Create a new pod with the name redis and with the image redis123.
+11- Create a new pod with the name redis and with the image redis123.
 
  kubectl run redis --image=redis123
 pod/redis created
 
-## 12- Now change the image on this pod to redis.
+12- Now change the image on this pod to redis.
 Once done, the pod should be in a running state.
 
 kubectl apply -f redis-pod.yaml
 pod/redis created
 
-## 13- Create a pod called my-pod of image nginx:alpine
+13- Create a pod called my-pod of image nginx:alpine
 
 kubectl get pod redis
 
 NAME    READY   STATUS    RESTARTS   AGE
 redis   1/1     Running   0          50s
 
-## 14- Delete the pod called my-pod
+14- Delete the pod called my-pod
 
 kubectl delete pod my-pod
 
