@@ -1,0 +1,25 @@
+- What is a namespace in Kubernetes, and why is it used?
+---------------------
+- How do you create a new namespace in Kubernetes using the kubectl command?
+---------------------
+- How can you list all namespaces in a Kubernetes cluster?
+---------------------
+- What is the default namespace in Kubernetes? What happens if you do not specify a namespace when deploying a resource?
+---------------------
+- How do you delete a namespace in Kubernetes? What happens to the resources within it?
+---------------------
+- How can you switch between namespaces while using the kubectl command?
+---------------------
+- How do you create a Kubernetes deployment in a specific namespace?
+---------------------
+- Can two different namespaces have resources with the same name? Explain your answer.
+---------------------
+- How can you check the resource quotas and limits for a specific namespace?
+---------------------
+- How do you configure a kubectl context to always use a specific namespace by default?
+---------------------
+- Create a YAML file to define a new namespace called dev-environment. Deploy it using kubectl.
+---------------------
+- Write a command to deploy a pod named test-pod running the nginx image into a namespace called testing.
+---------------------
+- List all the pods running in a namespace called production.

@@ -1,0 +1,55 @@
+- What is a namespace in Kubernetes, and why is it used?
+namespace is Logical Partition of Kubernetes cluster 
+it's used for Resource Isolation, Namespaces can be used in conjunction with Kubernetes Role-Based Access Control (RBAC) to control and limit access to resources. Different users or teams can have different levels of access based on the namespace.
+also for organizational management
+------------------------------------------------------------------------------------
+- How do you create a new namespace in Kubernetes using the kubectl command?
+using "kubectl create namespace <name>"
+------------------------------------------------------------------------------------
+- How can you list all namespaces in a Kubernetes cluster?
+using kubectl get namespaces
+------------------------------------------------------------------------------------
+- What is the default namespace in Kubernetes? What happens if you do not specify a namespace when deploying a resource?
+the default name is space is "default", if not specify a namespace it will be created in default namespace
+------------------------------------------------------------------------------------
+- How do you delete a namespace in Kubernetes? What happens to the resources within it?
+using kubectl delete namespace <name>
+All resources in within the name space is also deleted
+------------------------------------------------------------------------------------
+- How can you switch between namespaces while using the kubectl command?
+using kubectl config set-context --current --namespace=<name>
+------------------------------------------------------------------------------------
+- How do you create a Kubernetes deployment in a specific namespace?
+using cli "kubectl create deployment my-deployment --image=nginx:alpine --namespace=my-namespace"
+or in yaml file "metadata:
+  name: deployment
+  namespace: namespace"
+------------------------------------------------------------------------------------
+- Can two different namespaces have resources with the same name? Explain your answer.
+Yes The are separate, name space is used to separate recourses
+------------------------------------------------------------------------------------
+- How can you check the resource quotas and limits for a specific namespace?
+using cli "kubectl get resourcequotas --namespace=<name>"
+------------------------------------------------------------------------------------
+- How do you configure a kubectl context to always use a specific namespace by default?
+using "kubectl config set-context <context-name> --namespace=<name>"
+------------------------------------------------------------------------------------
+- Create a YAML file to define a new namespace called dev-environment. Deploy it using kubectl.
+ kubectl apply -f dev-env.yaml                  
+namespace/dev-environment created
+dev-env.yaml
+"
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev-environment
+"
+------------------------------------------------------------------------------------
+- Write a command to deploy a pod named test-pod running the nginx image into a namespace called testing.
+omarelbanna@Omars-MacBook-Air Lab04 % kubectl create namespace testing
+namespace/testing created
+omarelbanna@Omars-MacBook-Air Lab04 % kubectl run test-pod --image=nginx --namespace=testing
+pod/test-pod created
+------------------------------------------------------------------------------------
+- List all the pods running in a namespace called production.
+kubectl get pods --namespace=production
