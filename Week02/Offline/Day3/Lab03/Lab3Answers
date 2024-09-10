@@ -1,0 +1,133 @@
+1-Create a deployment called my-first-deployment of image nginx:alpine in the default namespace.
+Check to make sure the deployment is healthy.
+
+omarelbanna@Omars-MacBook-Air Lab02 % kubectl create deployment my-first-deployment --image=nginx:alpine
+deployment.apps/my-first-deployment created
+
+omarelbanna@Omars-MacBook-Air Lab02 % kubectl get deployments
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+my-first-deployment   1/1     1            1           50s
+--------------------------------------------------------------------------------
+2-Scale my-first-deployment up to run 3 replicas.
+Check to make sure all 3 replicas are ready.
+
+omarelbanna@Omars-MacBook-Air Lab02 % kubectl scale deployment my-first-deployment --replicas=3
+deployment.apps/my-first-deployment scaled
+
+omarelbanna@Omars-MacBook-Air Lab02 % kubectl get pods -l app=my-first-deployment
+NAME                                   READY   STATUS    RESTARTS   AGE
+my-first-deployment-66d98bf588-6xfkp   1/1     Running   0          4m14s
+my-first-deployment-66d98bf588-dwqr4   1/1     Running   0          91s
+my-first-deployment-66d98bf588-p4xt5   1/1     Running   0          91s
+--------------------------------------------------------------------------------
+3-Scale my-first-deployment down to run 2 replicas.
+
+omarelbanna@Omars-MacBook-Air Lab02 % kubectl scale deployment my-first-deployment --replicas=2
+deployment.apps/my-first-deployment scaled
+--------------------------------------------------------------------------------
+4-Change the image my-first-deployment runs from nginx:alpine to httpd:alpine .
+
+omarelbanna@Omars-MacBook-Air Lab02 % kubectl set image deployment/my-first-deployment nginx=httpd:alpine
+deployment.apps/my-first-deployment image updated
+--------------------------------------------------------------------------------
+5-Delete the deployment my-first-deployment
+
+omarelbanna@Omars-MacBook-Air Lab02 % kubectl delete deployment my-first-deployment
+deployment.apps "my-first-deployment" deleted
+--------------------------------------------------------------------------------
+6-Create deployment from the below yaml
+
+omarelbanna@Omars-MacBook-Air Lab03 % kubectl apply -f Task6.yaml
+deployment.apps/frontend-deployment created
+--------------------------------------------------------------------------------
+7-How many ReplicaSets exist on the system now?
+they are 2
+
+omarelbanna@Omars-MacBook-Air Lab03 % kubectl get replicasets
+NAME                             DESIRED   CURRENT   READY   AGE
+frontend-deployment-6469748456   4         4         0       74s
+new-replica-set                  4         4         0       43m
+--------------------------------------------------------------------------------
+8-How many PODs exist on the system now?
+There are 8
+
+omarelbanna@Omars-MacBook-Air Lab03 % kubectl get pods       
+NAME                                   READY   STATUS             RESTARTS   AGE
+frontend-deployment-6469748456-2rlhw   0/1     ImagePullBackOff   0          114s
+frontend-deployment-6469748456-52fc5   0/1     ErrImagePull       0          114s
+frontend-deployment-6469748456-9lr8g   0/1     ImagePullBackOff   0          114s
+frontend-deployment-6469748456-rcslh   0/1     ErrImagePull       0          114s
+new-replica-set-8znxv                  0/1     ImagePullBackOff   0          43m
+new-replica-set-g9dtc                  0/1     ImagePullBackOff   0          31m
+new-replica-set-nh5nq                  0/1     ImagePullBackOff   0          43m
+new-replica-set-x4whc                  0/1     ImagePullBackOff   0          43m
+--------------------------------------------------------------------------------
+9-Out of all the existing PODs, how many are ready?
+there are 0 of 8 are ready 
+
+omarelbanna@Omars-MacBook-Air Lab03 % kubectl get pods       
+NAME                                   READY   STATUS             RESTARTS   AGE
+frontend-deployment-6469748456-2rlhw   0/1     ImagePullBackOff   0          114s
+frontend-deployment-6469748456-52fc5   0/1     ErrImagePull       0          114s
+frontend-deployment-6469748456-9lr8g   0/1     ImagePullBackOff   0          114s
+frontend-deployment-6469748456-rcslh   0/1     ErrImagePull       0          114s
+new-replica-set-8znxv                  0/1     ImagePullBackOff   0          43m
+new-replica-set-g9dtc                  0/1     ImagePullBackOff   0          31m
+new-replica-set-nh5nq                  0/1     ImagePullBackOff   0          43m
+new-replica-set-x4whc                  0/1     ImagePullBackOff   0          43m
+--------------------------------------------------------------------------------
+10-What is the image used to create the pods in the new deployment?
+Containers:
+  busybox-container:
+    Image:      busybox888
+
+omarelbanna@Omars-MacBook-Air Lab03 % kubectl describe deployment frontend-deployment
+Name:                   frontend-deployment
+Namespace:              default
+CreationTimestamp:      Tue, 10 Sep 2024 16:31:09 +0300
+Labels:                 <none>
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               name=busybox-pod
+Replicas:               4 desired | 4 updated | 4 total | 0 available | 4 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  name=busybox-pod
+  Containers:
+   busybox-container:
+    Image:      busybox888
+    Port:       <none>
+    Host Port:  <none>
+    Command:
+      sh
+      -c
+      echo Hello Kubernetes! && sleep 3600
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      False   MinimumReplicasUnavailable
+  Progressing    True    ReplicaSetUpdated
+OldReplicaSets:  <none>
+NewReplicaSet:   frontend-deployment-6469748456 (4/4 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  5m15s  deployment-controller  Scaled up replica set frontend-deployment-6469748456 to 4
+--------------------------------------------------------------------------------
+11-Why do you think the deployment is not ready?
+Because of image
+
+omarelbanna@Omars-MacBook-Air Lab03 % kubectl describe pod frontend-deployment-6469748456-2rlhw
+Events:
+  Type     Reason     Age                     From               Message
+  ----     ------     ----                    ----               -------
+  Normal   Scheduled  8m38s                   default-scheduler  Successfully assigned default/frontend-deployment-6469748456-2rlhw to minikube
+  Normal   Pulling    6m55s (x4 over 8m38s)   kubelet            Pulling image "busybox888"
+  Warning  Failed     6m51s (x4 over 8m32s)   kubelet            Failed to pull image "busybox888": Error response from daemon: pull access denied for busybox888, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+  Warning  Failed     6m51s (x4 over 8m32s)   kubelet            Error: ErrImagePull
+  Warning  Failed     6m40s (x6 over 8m32s)   kubelet            Error: ImagePullBackOff
+  Normal   BackOff    3m35s (x19 over 8m32s)  kubelet            Back-off pulling image "busybox888"
