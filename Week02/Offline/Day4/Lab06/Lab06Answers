@@ -1,0 +1,132 @@
+1- What is a volume in Kubernetes, and how does it differ from a container's storage?
+
+a volume is a directory, often containing data, which is accessible to the containers in a Pod Volumes are used to persist data beyond the lifecycle of individual containers and Pods
+
+-- it difference in
+--- Kubernetes supports various types of volumes 
+--- Sharing: Volumes can be shared among multiple containers within the same Pod
+--- Persistent: Volumes can be persisted even after the Pod is deleted
+---------------------------------------------------------------------------------------
+2- What are the different types of volumes available in Kubernetes? Describe at least three types and their use cases.
+
+-- nfs: A volume that mounts an NFS (Network File System) share.
+
+--  persistentVolumeClaim (PVC): A volume that uses a Persistent Volume Claim to request storage resources. The actual storage is provided by a Persistent Volume (PV), which can be backed by different types of storage like cloud providers or on-premises storage.
+
+--  azureDisk: A volume that mounts an Azure Disk into a Pod. This requires the Azure cloud provider and supports dynamic provisioning.
+
+-- secret: A volume that allows sensitive data such as passwords, OAuth tokens, and ssh keys to be securely stored and accessed by containers.
+---------------------------------------------------------------------------------------
+3- How do PersistentVolumes (PVs) and PersistentVolumeClaims (PVCs) work together in Kubernetes? Explain their relationship and purpose.
+
+--PV Creation:
+
+PVs are created by administrators or automatically via StorageClasses. They represent the actual storage resources available in the cluster, with defined properties such as capacity and access modes.
+
+--PVC Creation:
+
+Users create PVCs to request storage for their applications. A PVC specifies the desired storage capacity and access modes, and optionally, the storage class.
+
+-- Binding:
+
+The Kubernetes control plane matches PVCs with available PVs based on the requested specifications. When a PVC is created, Kubernetes looks for a PV that satisfies the PVC’s requirements (capacity, access modes, and storage class).
+If a suitable PV is found, Kubernetes binds the PVC to that PV. Once bound, the PV is no longer available for other PVCs.
+Mounting:
+
+Once a PVC is bound to a PV, the storage can be used by Pods. The PVC is mounted into Pods as a volume. The Pods can then read from and write to the PV as specified by the PVC.
+---------------------------------------------------------------------------------------
+4- Create a Pod with an emptyDir volume:
+	Write a YAML definition for a Pod that uses an emptyDir volume to share data between two containers within the Pod. Deploy the Pod and verify that the data is shared.
+
+# check Task4.yaml in the same dir
+kubectl apply -f Task4.yaml
+pod/empty-pod configured
+---------------------------------------------------------------------------------------
+5- Set up a Pod with a hostPath volume:
+	Define a Pod that mounts a hostPath volume to access files from the host node’s file system. Deploy the Pod and verify that it can read/write to the specified directory on the host.
+
+# !! check Task5.yaml in the same dir  
+omarelbanna@Omars-MacBook-Air Lab06 % minikube ssh
+docker@minikube:~$ ls
+docker@minikube:~$ ls
+docker@minikube:~$ pwd
+/home/docker
+docker@minikube:~$ mkdir -p /mnt/data
+mkdir: cannot create directory '/mnt/data': Permission denied
+docker@minikube:~$ sudo mkdir mkdir -p /mnt/data
+
+kubectl apply -f Task5.yaml 
+pod/hostpath-pod created
+
+docker@minikube:~$ cd /mnt/data/
+docker@minikube:/mnt/data$ ls
+test.txt
+---------------------------------------------------------------------------------------
+6- Deploy a PersistentVolume (PV) and PersistentVolumeClaim (PVC):
+	Create a YAML file to define a PersistentVolume of 5Gi with ReadWriteOnce access mode. Then, create a PersistentVolumeClaim requesting 2Gi of storage from this PV. Deploy both resources and verify the PVC is bound to the PV.
+
+# first Create PV yaml Task6PV.yaml
+omarelbanna@Omars-MacBook-Air Lab06 % kubectl apply -f Task6PV.yaml
+persistentvolume/pv created
+
+# then the Task6PVC.yaml
+omarelbanna@Omars-MacBook-Air Lab06 % kubectl apply -f Task6PVC.yaml 
+persistentvolumeclaim/pvc created
+
+omarelbanna@Omars-MacBook-Air Lab06 % kubectl get pvc
+
+NAME   STATUS   VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+pvc    Bound    pv       5Gi        RWO            manual         <unset>                 29s
+# The STATUS is Bound !!
+---------------------------------------------------------------------------------------
+7- Create a Pod that uses a PVC:
+	Write a YAML definition for a Pod that uses the PVC created in Exercise 3. Mount the PVC to a specific path inside the container and test that the storage is accessible.
+
+# Check Task7.yaml
+omarelbanna@Omars-MacBook-Air Lab06 % kubectl apply -f Task7.yaml   
+pod/pvc-pod created
+
+# Verify 
+
+omarelbanna@Omars-MacBook-Air Lab06 % kubectl exec -it pvc-pod -- sh
+/ # cat /mnt/pvc/test.txt
+Testing PVC
+---------------------------------------------------------------------------------------
+8- Dynamic Provisioning of Persistent Volumes:
+	Create a StorageClass that uses a dynamic provisioner (e.g., AWS EBS, GCE Persistent Disk, or NFS). Deploy a PVC that requests storage dynamically using this StorageClass. Verify that the storage is dynamically provisioned.
+
+# first create the StorageClass check Task8StorageClass.yaml
+omarelbanna@Omars-MacBook-Air Lab06 % kubectl apply -f Task8StorageClass.yaml 
+storageclass.storage.k8s.io/ebs-storage-class created
+
+# then Create the pvc Check Task8pvc.yaml
+omarelbanna@Omars-MacBook-Air Lab06 % kubectl apply -f Task8pvc.yaml         
+persistentvolumeclaim/dynamic-pvc created
+
+# Verify Status bound and storage class that i have created 
+omarelbanna@Omars-MacBook-Air Lab06 % kubectl get pvc
+kubectl describe pvc dynamic-pvc
+
+---------------------------------------------------------------------------------------
+9- Use a configMap as a Volume:
+	Create a ConfigMap with some configuration data. Write a Pod YAML definition that mounts this ConfigMap as a volume and verify the data is correctly mounted and accessible inside the container.
+
+# first create the configMap Check Task9Map.yaml
+omarelbanna@Omars-MacBook-Air Lab06 % kubectl apply -f Task9Map.yaml 
+configmap/my-configmap created
+
+# Create The pod check Task9Pod
+omarelbanna@Omars-MacBook-Air Lab06 % kubectl apply -f Task9pod.yaml 
+pod/configmap-pod created
+
+# verify
+omarelbanna@Omars-MacBook-Air Lab06 % kubectl exec -it configmap-pod -- sh
+
+/ # 
+/ # cat /etc/config/config-file.txt
+key1=value1
+key2=value2
+/ # cat /etc/config/another-config
+setting1=true
+setting2=false
+/ # 

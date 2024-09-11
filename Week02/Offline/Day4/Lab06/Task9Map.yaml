@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-configmap
+data:
+  config-file.txt: |
+    key1=value1
+    key2=value2
+  another-config: |
+    setting1=true
+    setting2=false

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-pod
+spec:
+  containers:
+    - name: app-container
+      image: busybox
+      command: [ "sh", "-c", "cat /etc/config/config-file.txt && cat /etc/config/another-config && sleep 3600" ]
+      volumeMounts:
+        - name: config-volume
+          mountPath: /etc/config
+  volumes:
+    - name: config-volume
+      configMap:
+        name: my-configmap
