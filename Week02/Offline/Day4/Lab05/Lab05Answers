@@ -1,0 +1,197 @@
+- What is a Service in Kubernetes, and why is it needed?
+
+A Service in Kubernetes is an abstraction that defines a logical set of Pods and a policy for accessing them
+Key Features
+-- Stable Network Endpoint
+-- Load Balancing
+-- help in connective between backend and front end pod 
+---------------------------------------------------------------------------------------
+- What are the different types of Services in Kubernetes (e.g., ClusterIP, NodePort) and what are their use cases?
+
+-- NodePort
+-- ClusterIP
+-- LoadBalancer
+-- ExternalName
+---------------------------------------------------------------------------------------
+- what ar LoadBalancer, ExternalName service in kuberenetes and what are their use cases?
+
+LoadBalancer and ExternalName are two types of services used to expose applications in different ways
+-- loadBalancer
+It automatically provisions and configures a load balancer that distributes traffic to the backend Pods running in the Kubernetes cluster.
+-- ExternalName
+It provides a way to expose a service using an external DNS name, allowing you to access the service
+---------------------------------------------------------------------------------------
+- How does a Kubernetes Service use selectors to identify the Pods it routes traffic to? Can a Service be created without a selector?
+
+Service uses selectors to identify which Pods should receive the traffic directed to the Service. Selectors are defined as key-value pairs and match the labels assigned to Pods. These labels are metadata that describe the Pods and are used for organization and identification within the cluster.
+---------------------------------------------------------------------------------------
+- Explain how a NodePort service works in Kubernetes. What are its advantages and limitations?
+
+NodePort allocation: Kubernetes assigns a port between 30000-32767 on each node in the cluster.
+Routing traffic: When a request is sent to <NodeIP>:<NodePort>, Kubernetes forwards that traffic to the corresponding Pods based on the Service's selector.
+Cluster-wide exposure: All nodes in the cluster will listen for traffic on the assigned NodePort, even if the Pod isn't running on that specific node.
+---------------------------------------------------------------------------------------
+- What is a Headless Service in Kubernetes, and when would you use it? How does it differ from a standard ClusterIP service?
+
+A Headless Service is created by setting clusterIP: None in the service definition.
+Kubernetes doesn’t assign a ClusterIP. Instead, it returns the individual IP addresses of the Pods that match the service’s selectors.
+Clients can discover all the endpoints (Pods) behind the service via DNS, where the DNS returns multiple Pod IP addresses instead of a single service IP.
+---------------------------------------------------------------------------------------
+- Create a ClusterIP Service:
+	Write a YAML definition for a ClusterIP service that exposes a deployment named my-app running on port 8080. Ensure the service maps to port 80 inside the cluster.
+
+omarelbanna@Omars-MacBook-Air Lab05 % kubectl get service my-app-clusterip
+NAME               TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
+my-app-clusterip   ClusterIP   10.104.143.201   <none>        80/TCP    5m19s
+---------------------------------------------------------------------------------------
+- Set up a NodePort Service:
+	Create a NodePort service that exposes a deployment named backend on port 30001 of each node. Verify that the service is accessible externally via the node’s IP and port 30001.
+
+omarelbanna@Omars-MacBook-Air Lab05 % kubectl apply -f NodePort.yaml                        
+service/backend-service created
+---------------------------------------------------------------------------------------
+- Test Service with Selectors:
+	Create a ClusterIP service named web-service with the selector app: 0ld-web. Deploy two sets of Pods, one with the label app: old-web and another with the label app: api. Verify that only the web Pods receive traffic.
+
+# Creating ClusterIP Service with the selector app: 0ld-web
+omarelbanna@Omars-MacBook-Air Lab05 % kubectl apply -f web-service.yaml 
+service/web-service created
+
+# Creating old web pods
+omarelbanna@Omars-MacBook-Air Lab05 % kubectl apply -f old-web.yaml 
+pod/old-web-pod-1 created
+pod/old-web-pod-2 created
+
+# Creating api web pods
+omarelbanna@Omars-MacBook-Air Lab05 % kubectl apply -f api-web.yaml 
+pod/api-web-pod-1 created
+pod/api-web-pod-2 created
+
+# Check Routing  
+omarelbanna@Omars-MacBook-Air Lab05 % kubectl get service web-service
+
+NAME          TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+web-service   ClusterIP   10.100.30.6   <none>        80/TCP    25m
+omarelbanna@Omars-MacBook-Air Lab05 % kubectl get endpoints web-service
+
+NAME          ENDPOINTS                           AGE
+web-service   10.244.0.47:8080,10.244.0.48:8080   25m
+
+# Test Access to the Service
+-- using test pod 
+
+kubectl run -i --tty --rm debug --image=busybox --restart=Never -- sh
+
+If you don't see a command prompt, try pressing enter.
+/ # 
+/ # 
+/ # wget -qO- http://web-service:80
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+/ # 
+/ # wget -qO- http://api-service:80
+wget: bad address 'api-service:80'
+---------------------------------------------------------------------------------------
+- Change Service Selector:
+	Update an existing service to change its selector from app: old-web to app: new-web. Verify that the traffic is now routed only to Pods with the new label.
+
+# configer new service to new- wep
+omarelbanna@Omars-MacBook-Air Lab05 % kubectl apply -f web-service.yaml
+service/web-service configured
+
+# labels 
+omarelbanna@Omars-MacBook-Air Lab05 % kubectl get pods --show-labels
+
+NAME            READY   STATUS    RESTARTS   AGE   LABELS
+api-web-pod-1   1/1     Running   0          12m   app=api-web
+api-web-pod-2   1/1     Running   0          12m   app=api-web
+old-web-pod-1   1/1     Running   0          13m   app=old-web
+old-web-pod-2   1/1     Running   0          13m   app=old-web
+
+# test 
+/ # wget -qO- http://web-service:80
+
+wget: can't connect to remote host (10.100.30.6): Connection refused
+---------------------------------------------------------------------------------------
+- Configure a Service for Multiple Ports:
+	Define a service that exposes multiple ports (e.g., 80 for HTTP and 443 for HTTPS) on a deployment named multi-port-app "get the front in app from your own choice". Verify both ports are accessible within the cluster.
+
+# apply service
+omarelbanna@Omars-MacBook-Air Lab05 % kubectl apply -f multi-port-app.yaml 
+service/multi-port-service created
+
+# Create Deployment
+omarelbanna@Omars-MacBook-Air Lab05 % kubectl apply -f Deployment.yaml 
+deployment.apps/multi-port-app created
+
+# Test 
+
+/ # wget -qO- http://multi-port-service:80
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+/ # wget -qO- https://multi-port-service:443
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
