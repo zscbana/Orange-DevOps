@@ -1,0 +1,141 @@
+- What is RBAC in Kubernetes, and why is it important?
+-- Controls access to Kubernetes resources based on roles.
+------------------------------------------------------------------------------------------------
+- What are the main components of RBAC in Kubernetes? Describe the purpose of each.
+-- Role
+-- ClusterRole
+-- RoleBinding
+-- ClusterRoleBinding
+------------------------------------------------------------------------------------------------
+- How do Roles differ from ClusterRoles in Kubernetes?
+-- Role: Namespace-specific.
+-- ClusterRole: Cluster-wide.
+------------------------------------------------------------------------------------------------
+- What is a RoleBinding in Kubernetes, and how does it differ from a ClusterRoleBinding?
+-- RoleBinding: Namespace-specific.
+--ClusterRoleBinding: Cluster-wide.
+------------------------------------------------------------------------------------------------
+- How can you list all the Roles and RoleBindings in a specific namespace?
+-- kubectl get roles -n <namespace>
+-- kubectl get rolebindings -n <namespace>
+------------------------------------------------------------------------------------------------
+- How do you create a Role that allows a user to read secrets only in a specific namespace? Provide a YAML example.
+"apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secret-reader
+  namespace: default
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list"]
+"
+------------------------------------------------------------------------------------------------
+- Explain how ClusterRoleBindings can be used to grant permissions across the entire Kubernetes cluster.
+--ClusterRoleBinding: Grants permissions across the cluster.
+------------------------------------------------------------------------------------------------
+- What are Subjects in RBAC, and what types of subjects can be used in RoleBindings or ClusterRoleBindings?
+-- Subjects: Users, Groups, ServiceAccounts.
+------------------------------------------------------------------------------------------------
+- How can you check the permissions of a particular user or service account in a Kubernetes cluster?
+-- kubectl auth can-i <verb> <resource> --as <user/serviceaccount>
+------------------------------------------------------------------------------------------------
+- What is the significance of the aggregate-to-admin, aggregate-to-edit, and aggregate-to-view labels in Kubernetes RBAC?
+-- aggregate-to-admin: Grants admin permissions.
+-- aggregate-to-edit: Grants edit permissions.
+-- aggregate-to-view: Grants view permissions.
+------------------------------------------------------------------------------------------------
+- How does Kubernetes RBAC integrate with external identity providers (e.g., LDAP, OIDC)?
+-- Kubernetes RBAC integrates with external identity providers through the use of authentication plugins.
+------------------------------------------------------------------------------------------------
+- How do you troubleshoot RBAC permission errors in Kubernetes? What are some common issues?
+-- Common issues: Missing RoleBindings, incorrect RoleBindings, incorrect permissions.
+-- Troubleshooting steps: Check RoleBindings, check permissions, check authentication.
+------------------------------------------------------------------------------------------------
+- Explain how to grant temporary elevated privileges to a user in Kubernetes. What are the security implications?
+-- Grant temporary elevated privileges using the `kubectl auth` command.
+-- Security implications: Temporary elevated privileges can be a security risk if not properly managed.
+------------------------------------------------------------------------------------------------
+- What is the difference between using RBAC and Kubernetes' native ServiceAccount permissions for pods?
+-- RBAC: Grants permissions to users and groups.
+-- ServiceAccount permissions: Grants permissions to pods.
+------------------------------------------------------------------------------------------------
+- How can you restrict access to certain Kubernetes API groups or resources using RBAC? Provide a YAML example.
+"apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: restrict-deployments
+  namespace: default
+rules:
+- apiGroups: [""]
+  resources: ["deployments"]
+  verbs: ["get", "list"]
+"
+------------------------------------------------------------------------------------------------
+- Write a YAML definition for a ClusterRole that allows listing all pods in any namespace.
+"apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pod-lister
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["list"]
+"
+------------------------------------------------------------------------------------------------
+- Create a Role that allows a user to create, update, and delete deployments only within the dev namespace.
+"apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: deployment-manager
+  namespace: dev
+rules:
+- apiGroups: [""]
+  resources: ["deployments"]
+  verbs: ["create", "update", "delete"]
+"
+------------------------------------------------------------------------------------------------
+- Set up a RoleBinding that assigns the view role to a user named john in the testing namespace. Provide the YAML.
+"apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: view-binding
+  namespace: testing
+subjects:
+- kind: User
+  name: john
+roleRef:
+  kind: Role
+  name: view
+"
+------------------------------------------------------------------------------------------------
+- Deploy a ClusterRoleBinding that grants the edit role to a service account named developer in all namespaces.
+"apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: edit-binding
+subjects:
+- kind: ServiceAccount
+  name: developer
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: edit
+"
+------------------------------------------------------------------------------------------------
+- Write a command to check if a user named alice has permission to delete pods in the production namespace.
+"kubectl auth can-i delete pods --namespace=production --user=alice"
+------------------------------------------------------------------------------------------------
+- Write a YAML definition for a Role named pod-executor in the ci-cd namespace that allows creating, listing, and executing Pods. Bind this role to a service account named pipeline-sa using a RoleBinding.
+"apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-executor
+  namespace: ci-cd
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["create", "list", "exec"]
+"
+- Create a Role named "persistent-volume-access" in the storage namespace that grants permissions to create and delete PersistentVolumeClaims. Assign this role to a service account named storage-admin using a RoleBinding.
+- Create a ClusterRole named readonly-cluster that grants read-only access to all resources across the cluster. Then, create a ClusterRoleBinding that assigns this role to a user named alice.
