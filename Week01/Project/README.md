@@ -14,11 +14,12 @@ This repository sets up a three-tier application consisting of a backend, a data
 
 ```bash
 .
-├── backend/              # Backend application files
-│   └── Dockerfile        # Multi-stage Dockerfile
-├── db_data/              # Database volume data
-├── certs/                # SSL certificates for HTTPS
-├── nginx/                # Nginx configuration files
-│   └── nginx.conf        # Nginx configuration
-├── .env                  # Environment file for sensitive data
-└── docker-compose.yml    # Docker Compose configuration
+├── backend/ 
+│   └── Dockerfile     
+├── db_data_password/
+│   └── password.txt
+├── nginx/
+|   └── Dockerfile
+│   └── nginx.conf
+|   └── ssl.sh
+└── docker-compose.yml
