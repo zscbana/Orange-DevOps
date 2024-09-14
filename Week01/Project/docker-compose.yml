@@ -25,12 +25,14 @@ services:
     networks:
       - backend-network
       - shared-network
+    ports:
+      - "8000:8000"
 
   db:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db-password
-      MYSQL_DATABASE: omar
+      MYSQL_DATABASE: example
     volumes:
       - db_data:/var/lib/mysql
     secrets:
