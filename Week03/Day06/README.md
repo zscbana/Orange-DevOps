@@ -67,10 +67,9 @@
 	B. Password: jenk!n$
 	C. Full Name: Orange DevOps
 ```
-User ID
-  ↓
-Name
-jenkins	Orange DevOps
+User ID         Name
+   ↓              ↓
+jenkins 	Orange DevOps
 ```
 ---------------------------------------------------------------------------------------
 - done
