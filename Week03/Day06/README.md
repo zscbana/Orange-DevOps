@@ -48,18 +48,32 @@
 - Yes, all the plugins are installed
 ---------------------------------------------------------------------------------------
 ## Install Jenkins as normal service or as docker container (bouns install it using ansible)
-```mar
+```markdown
+> omarelbanna@Omars-MacBook-Air Day06 % brew install jenkins-lts       
+> omarelbanna@Omars-MacBook-Air Day06 % brew services start jenkins-lts
+> localhost:9090 # note that i have changed the port 
+```
 ---------------------------------------------------------------------------------------
-- Under what location Jenkins store its data primarily?
-
-- Install and configure thinbackup plugin and make sure that the default dir for backup is: /var/lib/jenkins/jenkins_backup
-
+# Under what location Jenkins store its data primarily?
+- /var/lib/jenkins
+---------------------------------------------------------------------------------------
+# Install and configure thinbackup plugin and make sure that the default dir for backup is: /var/lib/jenkins/jenkins_backup
+- ThinBackup
+- Settings are now integrated in global configuration.
+---------------------------------------------------------------------------------------
 - Create a Jenkins user as per the details provided below.
 
 	A. Username: jenkins
 	B. Password: jenk!n$
 	C. Full Name: Orange DevOps
-
+```
+User ID
+  ↓
+Name
+jenkins	Orange DevOps
+```
+---------------------------------------------------------------------------------------
+- done
 - Install the Role-based Authorization Strategy plugin and enable the Role-Based Strategy authorization in Jenkins security settings.
 
 - Install the Role-based Authorization Strategy plugin and enable the Role-Based Strategy authorization in Jenkins security settings.
