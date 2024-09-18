@@ -20,5 +20,4 @@ COPY --from=build-stage /backend /backend
 
 EXPOSE 8000
 
-
 ENTRYPOINT ["/backend"]
