@@ -1,10 +1,10 @@
 # Questions and Answers Omar Elbanna
 
-- What is the packages is a prerequisite for installing Jenkins ?
--- Java Package JDK
+## What is the packages is a prerequisite for installing Jenkins ?
+- Java Package JDK
 ---------------------------------------------------------------------------------------
-- Run this command and tell me the ssh port: curl -Lv http://localhost:8085/login 2>&1 | grep -i 'x-ssh-endpoint'
--- noting happened 
+## Run this command and tell me the ssh port: curl -Lv http://localhost:8085/login 2>&1 | grep -i 'x-ssh-endpoint'
+- noting happened 
 ---------------------------------------------------------------------------------------
 - What are jenkins plugins?
 
