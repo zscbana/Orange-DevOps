@@ -6,19 +6,19 @@
 ## Run this command and tell me the ssh port: curl -Lv http://localhost:8085/login 2>&1 | grep -i 'x-ssh-endpoint'
 - noting happened 
 ---------------------------------------------------------------------------------------
-- What are jenkins plugins?
+## What are jenkins plugins?
 
 	A. Plugins are used to configure the security settings in Jenkins.
 	B. Plugins are the primary means of enhancing the functionality of a Jenkins environment to suit organization or user specific needs.
 	C. Plugins are used to create jobs in Jenkins.
 	D. Plugins are the tools to setup CI/CD pipelines in Jenkins.
 
--- B. Plugins are the primary means of enhancing the functionality of a Jenkins environment to suit organization or user specific needs.
+- B. Plugins are the primary means of enhancing the functionality of a Jenkins environment to suit organization or user specific needs.
 ---------------------------------------------------------------------------------------
-- Can we install the .hpi plugin file from Jenkins web UI?
--- Yes
+## Can we install the .hpi plugin file from Jenkins web UI?
+- Yes
 ---------------------------------------------------------------------------------------
-- Make sure that Git and Github plugins are installed if it's not kindly install them
+## Make sure that Git and Github plugins are installed if it's not kindly install them
 ```markdown
 >"Git client plugin
 >Version5.0.0
@@ -44,10 +44,12 @@
 >Version61.v629f2cc41d83
 >Allows Pipeline Groovy libraries to be loaded on the fly from GitHub.
 >Report an issue with this plugin"
--- Yes, all the plugins are installed
+```
+- Yes, all the plugins are installed
 ---------------------------------------------------------------------------------------
-- Install Jenkins as normal service or as docker container (bouns install it using ansible)
-
+## Install Jenkins as normal service or as docker container (bouns install it using ansible)
+```mar
+---------------------------------------------------------------------------------------
 - Under what location Jenkins store its data primarily?
 
 - Install and configure thinbackup plugin and make sure that the default dir for backup is: /var/lib/jenkins/jenkins_backup
