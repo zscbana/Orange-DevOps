@@ -1,8 +1,29 @@
-# **Kubernetes Project**
----
+# **Kubernetes Project** 
 ![Kubernetes Project](https://img.shields.io/badge/Kubernetes-Project-brightgreen)
-## As previous project we will create Deployment for each tier in the project (proxy,backend,database) with 2 replica for each \ 
-- Put all project in namespace called webapp \
-- mount db-credentials in pods on your host machine \
-- Choose which suitable service for grouping each tier \
-- Make sure that the proxy pods comminate with the service that you have select for backend pods \
+
+---
+
+## Project Overview
+
+In this project, we will create Deployments for each tier with 2 replicas for each:
+
+- **Proxy**
+- **Backend**
+- **Database**
+
+### Requirements
+
+- All resources should be organized in a namespace called **`webapp`**.
+- Mount **db-credentials** in pods from your host machine.
+- Choose a suitable service for grouping each tier.
+- Ensure that the proxy pods communicate with the service selected for the backend pods.
+
+---
+
+## Getting Started
+
+1. Clone the repository.
+2. Navigate to the project directory.
+3. Apply the configurations using `kubectl`.
+
+Feel free to reach out for any questions or feedback!
