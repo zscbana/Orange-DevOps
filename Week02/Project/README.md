@@ -3,4 +3,4 @@
 - Put all project in namespace called webapp \
 - mount db-credentials in pods on your host machine \
 - Choose which suitable service for grouping each tier \
-- Make sure that the proxy pods commincate with the service that you have select for backend pods \
+- Make sure that the proxy pods comminate with the service that you have select for backend pods \
