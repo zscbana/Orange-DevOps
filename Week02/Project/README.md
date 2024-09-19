@@ -1,4 +1,6 @@
-# <span style='color: red;'> kubrantes Project </span>
+# **Kubernetes Project**
+---
+![Kubernetes Project](https://img.shields.io/badge/Kubernetes-Project-brightgreen)
 ## As previous project we will create Deployment for each tier in the project (proxy,backend,database) with 2 replica for each \ 
 - Put all project in namespace called webapp \
 - mount db-credentials in pods on your host machine \
