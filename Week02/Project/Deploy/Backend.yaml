@@ -18,7 +18,7 @@ spec:
       volumes:
       - name: db-password
         hostPath:
-          path: /Users/omarelbanna/Documents/InternShip-Training/Orange-DevOps/Week02/Project/PV-Pvc
+          path: ~/Orange-DevOps/Week02/Project/PV-Pvc
       containers:
       - name: backend
         image: omarbanna/backend1:latest

@@ -18,7 +18,7 @@ spec:
       volumes:
       - name: db-password
         hostPath:
-          path: /path/to/your/directory/db-credentials
+          path: ~/Orange-DevOps/Week02/Project/db-credentials
           type: File 
       - name: db-data
         persistentVolumeClaim:
