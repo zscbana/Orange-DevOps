@@ -1,2 +1,3 @@
-#!/usr/bin
+#!/bin/bash
+
 kubectl delete all --all -n webapp
