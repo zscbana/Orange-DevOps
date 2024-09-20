@@ -1,11 +1,14 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: db-credentials-pv
+  name: db-pv
+  namespace: webapp
 spec:
   capacity:
-    storage: 1Gi
+    storage: 5Gi
+  storageClassName: standard
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: "./db-credentials"
+    path: "/var/mysql"

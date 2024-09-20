@@ -17,9 +17,8 @@ spec:
     spec:
       volumes:
       - name: db-password
-        hostPath:
-          path: ~/Orange-DevOps/Week02/Project/db-credentials
-          type: File 
+        secret:
+          secretName: db-secret
       - name: db-data
         persistentVolumeClaim:
           claimName: db-pvc
@@ -27,14 +26,15 @@ spec:
       - name: database
         image: mysql:8.0
         env:
-        - name: MYSQL_ROOT_PASSWORD_FILE
-          value: /mnt/db-password
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: db-password
         - name: MYSQL_DATABASE
           value: "example"
         ports:
         - containerPort: 3306
         volumeMounts:
-        - name: db-password
-          mountPath: /mnt
         - name: db-data
           mountPath: "/var/lib/mysql"
