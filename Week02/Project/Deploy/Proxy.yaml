@@ -18,6 +18,6 @@ spec:
       containers:
       - name: proxy
         image: omarbanna/proxy1:latest
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 443

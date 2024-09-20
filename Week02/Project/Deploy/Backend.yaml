@@ -22,7 +22,7 @@ spec:
       containers:
       - name: backend
         image: omarbanna/backend1:latest
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
         volumeMounts:
