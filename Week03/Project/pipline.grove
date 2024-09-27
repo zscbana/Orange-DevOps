@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Check kubectl') {
+            steps {
+                script {
+                    sh 'kubectl get nodes'
+                }
+            }
+        }
+
+        stage('Clone Repository') {
+            steps {
+                echo 'Cloning Repository...'
+                git url: 'https://github.com/zscbana/Orange-DevOps', branch: 'main'
+            }
+        }
+
+        stage('Run Deployment Script') {
+            steps {
+                echo 'Running Deployment Script...'
+                sh '''
+                #!/bin/bash
+                NAMESPACE="webapp"
+                kubectl create namespace $NAMESPACE || echo "Namespace $NAMESPACE already exists"
+                kubectl apply -f PV-Pvc/PV.yaml -n $NAMESPACE
+                kubectl apply -f PV-Pvc/PVC.yaml -n $NAMESPACE
+                kubectl apply -f Deploy/Db.yaml -n $NAMESPACE
+                kubectl apply -f Deploy/Backend.yaml -n $NAMESPACE
+                kubectl apply -f Deploy/Proxy.yaml -n $NAMESPACE
+                kubectl apply -f Services/DB.yaml -n $NAMESPACE
+                kubectl apply -f Services/Backend.yaml -n $NAMESPACE
+                kubectl apply -f Services/Proxy.yaml -n $NAMESPACE
+                echo "Deployment completed."
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment Completed Successfully.'
+        }
+        failure {
+            echo 'Deployment Failed.'
+        }
+    }
+}
