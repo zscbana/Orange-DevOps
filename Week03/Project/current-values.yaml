@@ -1,0 +1,5 @@
+USER-SUPPLIED VALUES:
+Master:
+  Image: kumargaurav522/jnlp-kubectl-slave
+Persistence:
+  Enabled: false
