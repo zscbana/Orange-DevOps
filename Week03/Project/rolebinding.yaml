@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: jenkins-deployment-binding
+  namespace: webapp
+subjects:
+- kind: ServiceAccount
+  name: jenkins-admin
+  namespace: devops-tools # Update with your actual namespace where the service account is located
+roleRef:
+  kind: Role
+  name: jenkins-deployment-role
+  apiGroup: rbac.authorization.k8s.io
+
