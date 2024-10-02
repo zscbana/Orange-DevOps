@@ -237,4 +237,46 @@ roleRef:
 
 - This command checks if the service account has permission to get deployments in the webapp namespace. If it returns yes, the permissions are set correctly.
 
-## run the Pipline
+## run the pipeline
+
+```
+pipeline {
+    agent any
+    environment {
+        REPO_URL = 'https://github.com/zscbana/Orange-DevOps'
+        NAMESPACE = 'webapp'
+    }
+    stages {
+        stage('Clone Repository') {
+            steps {
+                // Cloning the GitHub repository
+                git url: "${REPO_URL}", branch: 'main'
+            }
+        }
+        stage('Navigate and List Files') {
+            steps {
+                // List files and navigate to the project directory
+                sh '''
+                ls
+                cd Week02/Project
+                ls
+                '''
+            }
+        }
+        stage('Start Deployment') {
+            steps {
+                // Execute the Start script for deploying the app
+                sh './Week02/Project/Start'
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Deployment completed successfully!'
+        }
+        failure {
+            echo 'Deployment failed!'
+        }
+    }
+}
+```
