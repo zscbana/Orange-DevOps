@@ -283,9 +283,9 @@ pipeline {
 ```
 omarelbanna@Omars-MacBook-Air test2 % kubectl get pods -n webapp
 NAME                                 READY   STATUS                       RESTARTS   AGE
-backend-deployment-6b7867797-h62hd   0/1     Init:0/1                     0          41m
-backend-deployment-6b7867797-p9qml   0/1     Init:0/1                     0          41m
-database-deployment-58c9dcbb-qr6wv   0/1     CreateContainerConfigError   0          41m
+backend-deployment-6b7867797-h62hd   0/1     Running                      0          41m
+backend-deployment-6b7867797-p9qml   0/1     Running                      0          41m
+database-deployment-58c9dcbb-qr6wv   0/1     Running                      0          41m
 proxy-deployment-795d645db-6vwq9     1/1     Running                      0          41m
 proxy-deployment-795d645db-hvx2s     1/1     Running                      0          41m
 ```
