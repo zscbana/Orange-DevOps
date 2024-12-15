@@ -18,7 +18,7 @@
 - [Project Documentation](#project-documentation)
 
 ## Main Projects
-
+## ⚠️ Click the project title to visit the project
 ### [Final Project - Complete CI/CD pipeline](https://github.com/zscbana/ODC-Final-Project-CI-CD)
 This project focuses on building a complete CI/CD pipeline for the Orange Digital Center training. It involves multiple tools and technologies including:
 - **Jenkins** for CI/CD automation
