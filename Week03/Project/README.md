@@ -1,6 +1,50 @@
-# Jenkins Project 
+# Week 03 Project: Jenkins on Kubernetes (Minikube) for CI/CD Pipeline
 
-## Step 1: Create a Dockerfile that installs Jenkins and kubectl:
+This project aims to set up Jenkins inside a Kubernetes (Minikube) environment, which will be used to deploy the Kubernetes deployments created in **Week 02**. The Week 02 project involved creating Kubernetes deployments for an application with three tiers (Proxy, Backend, and Database), each scaled with two replicas for high availability. The focus of this week is to automate the deployment process using Jenkins as a Continuous Integration and Continuous Deployment (CI/CD) tool.
+
+---
+
+## 1. Project Overview
+
+The goal of this project is to automate the deployment process of the Kubernetes-based application that was built in **Week 02**. In Week 02, we created Kubernetes deployments for the Proxy, Backend, and Database tiers of the application, ensuring they were scalable and highly available with two replicas for each tier. The primary focus of this week is to set up a Jenkins server inside Minikube and configure it to trigger CI/CD pipelines for automated deployments to the Kubernetes cluster.
+
+### **Week 02 Project Recap:**
+In the previous week (Week 02), the project involved creating the following Kubernetes resources:
+- **Proxy**: A service that acts as a gateway for routing traffic.
+- **Backend**: The application logic and business layer.
+- **Database**: The persistent storage layer, typically using a service like PostgreSQL or MySQL.
+
+The goal of Week 02 was to ensure each of these application tiers was highly available and scalable within Kubernetes.
+
+### **Week 03 Objective:**
+This week, we will set up Jenkins as a CI/CD tool to automate the deployment of these three tiers onto the Kubernetes environment using Jenkins pipelines.
+
+---
+
+## 2. Prerequisites
+
+Before setting up Jenkins in Minikube, ensure you have the following:
+
+- **Minikube** installed and running (used to create a local Kubernetes cluster).
+- **kubectl** installed to interact with the Kubernetes cluster.
+- **Jenkins** (latest stable version) to automate the CI/CD pipeline.
+- Access to the **Week 02 Kubernetes deployment YAML files** for Proxy, Backend, and Database services.
+
+---
+
+## 3. Setting Up Minikube
+
+1. **Install Minikube**: Follow the official documentation to install Minikube for your operating system.
+2. **Start Minikube**: Run the following command to start the Minikube cluster:
+    ```bash
+    minikube start
+    ```
+3. **Check Cluster Status**: Verify the cluster is running with:
+    ```bash
+    kubectl cluster-info
+    ```
+    
+## Step 4: Create a Dockerfile that installs Jenkins and kubectl:
 ```
 # Start with the official Jenkins image
 FROM jenkins/jenkins:lts
@@ -120,7 +164,7 @@ spec:
 ```
 - kubectl apply -f volume.yaml -n devops-tools
 
-## Step 4: Create Jenkins Deployment
+## Step 5: Create Jenkins Deployment
 
 ``` apiVersion: apps/v1
 kind: Deployment
@@ -182,21 +226,21 @@ spec:
 ```
 - kubectl apply -f deployment.yaml -n devops-tools
 
-## Step 5: Expose Jenkins
+## Step 6: Expose Jenkins
 
 - kubectl expose deployment jenkins --type=NodePort --name=jenkins-service -n devops-tools
 
 ## Step 6: Access Jenkins
 - minikube service jenkins-service -n devops-tools --url
 
-## Step 7: Verify Deployment
+## Step 8: Verify Deployment
 - kubectl get pods -n devops-tools
 
 - kubectl exec -it <jenkins-pod-name> -n devops-tools -- /bin/bash
 
  - cat /var/jenkins_home/secrets/initialAdminPassword
 
-## step 8 Create a Role: This role will allow the jenkins-admin service account to perform actions on the deployments and services in the webapp namespace.
+## step 9 Create a Role: This role will allow the jenkins-admin service account to perform actions on the deployments and services in the webapp namespace.
 ```
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -289,3 +333,15 @@ database-deployment-58c9dcbb-qr6wv   1/1     Running                      0     
 proxy-deployment-795d645db-6vwq9     1/1     Running                      0          41m
 proxy-deployment-795d645db-hvx2s     1/1     Running                      0          41m
 ```
+---
+
+## 8. Conclusion
+
+This project demonstrates how to automate the deployment of a multi-tier application using Jenkins and Kubernetes (Minikube). By setting up Jenkins in a Kubernetes environment, we created an efficient CI/CD pipeline for the deployment of services with high availability and scalability.
+
+---
+
+## 9. References
+
+- Jenkins Documentation: [https://www.jenkins.io/doc/](https://www.jenkins.io/doc/)
+- Kubernetes Documentation: [https://kubernetes.io/docs/](https://kubernetes.io/docs/)
