@@ -3,9 +3,6 @@
 <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
   <img src="icons/ODC.png" alt="Orange Icon" style="width: 40px; height: 40px; border-radius: 50%; margin: 5px;">
   <img src="icons/digitalhub.png" alt="DigitalHub Icon" style="width: 40px; height: 40px; border-radius: 50%; margin: 5px;">
-  <img src="icons/Docker.png" alt="Docker Icon" style="width: 40px; height: 40px; border-radius: 50%; margin: 5px;">
-  <img src="icons/K8s.png" alt="K8s Icon" style="width: 40px; height: 40px; border-radius: 50%; margin: 5px;">
-  <img src="icons/jenkins.png" alt="Jenkins Icon" style="width: 40px; height: 40px; border-radius: 50%; margin: 5px;">
 </div>
 
 ## Table of Contents
@@ -17,8 +14,19 @@
 - [Offline Folders](#offline-folders)
 - [Project Documentation](#project-documentation)
 
+---
+
+## 🛠️ **Technologies Used**
+[![Docker](https://img.shields.io/badge/Docker-Intermediate-blue?style=flat-square&logo=docker)](#)  
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-Intermediate-blue?style=flat-square&logo=kubernetes)](#)  
+[![Jenkins](https://img.shields.io/badge/Jenkins-Intermediate-red?style=flat-square&logo=jenkins)](#)  
+[![Azure](https://img.shields.io/badge/Azure-Expert-blue?style=flat-square&logo=microsoftazure)](#)  
+[![ArgoCD](https://img.shields.io/badge/ArgoCD-Intermediate-purple?style=flat-square&logo=argo)](#)  
+
+---
+
 ## Main Projects
-## ⚠️ Click the project title to visit the project
+### ⚠️ Click the project title to visit the project
 ### [Final Project - Complete CI/CD pipeline](https://github.com/zscbana/ODC-Final-Project-CI-CD)
 This project focuses on building a complete CI/CD pipeline for the Orange Digital Center training. It involves multiple tools and technologies including:
 - **Jenkins** for CI/CD automation
@@ -28,13 +36,19 @@ This project focuses on building a complete CI/CD pipeline for the Orange Digita
 - **Ubuntu VM** for the CI stage, where dependencies are installed, unit tests are run, and builds are created in the local environment.
 - **Azure Cloud** to set up the **Ubuntu VM** for the CI stage, where Docker images are built and pushed to Docker Hub repositories.
 
+---
+
 ### [Project Week 03 - Jenkins on K8s](https://github.com/zscbana/Orange-DevOps/tree/main/Week03/Project)
 This project involves configuring Jenkins within a Kubernetes cluster. Key tasks include:
 - Deploying Jenkins inside Kubernetes
 - Configuring **Roles** and **RoleBinding** in Kubernetes to grant Jenkins the necessary permissions for deploying applications via pipelines inside a specific namespace
 
+---
+
 ### [Project Week 02 - Kubernetes Deployment](https://github.com/zscbana/Orange-DevOps/tree/main/Week02/Project)
 This project involves creating Kubernetes deployments for each tier of the application (Proxy, Backend, and Database), each with two replicas. The goal is to ensure that these tiers are scalable and highly available in a Kubernetes environment.
+
+---
 
 ### [Project Week 01 - Dockerized Three-Tier Application](https://github.com/zscbana/Orange-DevOps/tree/main/Week01/Project)
 The first project is about creating a **Dockerized three-tier application**, which includes:
@@ -42,9 +56,13 @@ The first project is about creating a **Dockerized three-tier application**, whi
 - Using **Docker** concepts to containerize the application
 - Using **Docker Compose** to manage multi-container deployments for easy setup and orchestration
 
+---
+
 ## Offline Folders
 
 In each week's project, you will find an **Offline** folder containing labs and tasks that were required to be done offline.
+
+---
 
 ## Project Documentation
 
